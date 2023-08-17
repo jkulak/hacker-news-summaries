@@ -5,10 +5,10 @@ import sqlite3
 import requests
 
 REQUEST_TIMEOUT = 10
-HN_JSON_FEED_URL = "https://hnrss.org/newest.jsonfeed"
+HN_JSON_FEED_URL = "https://hnrss.org/best.jsonfeed"
 
 # Create or connect to hn.sqlite database
-conn = sqlite3.connect("hn.sqlite3")
+conn = sqlite3.connect("db/hn.sqlite3")
 cursor = conn.cursor()
 
 
@@ -29,6 +29,7 @@ def create_table():
         scraping_date DATETIME,
         comments_url TEXT,
         num_comments INTEGER,
+        points INTEGER,
         comments_json TEXT,
         article_content_raw TEXT,
         article_content_extracted TEXT
@@ -50,7 +51,13 @@ def extract_from_content_html(content_html):
         else None
     )
 
-    return comments_url, num_comments
+    points = (
+        int(re.search(r"Points: (\d+)", content_html).group(1))
+        if re.search(r"Points: (\d+)", content_html)
+        else None
+    )
+
+    return comments_url, num_comments, points
 
 
 def fetch_comments(url):
@@ -71,7 +78,7 @@ def main():
     scraping_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     for item in data["items"]:
-        comments_url, num_comments = extract_from_content_html(
+        comments_url, num_comments, points = extract_from_content_html(
             item["content_html"]
         )
         # comments_data = fetch_comments(comments_url) if comments_url else None
@@ -91,8 +98,8 @@ def main():
             INSERT OR IGNORE INTO hacker_news (
             hn_id, title, content_html, url, external_url, date_published,
             author_name, author_url, scraping_date, comments_url, num_comments, comments_json,
-            article_content_raw, article_content_extracted
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            article_content_raw, article_content_extracted, points
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 get_id_from_url(item.get("id")),
@@ -109,6 +116,7 @@ def main():
                 comments_data,
                 article_content_raw,
                 article_content_extracted,
+                points,
             ),
         )
 
