@@ -1,7 +1,7 @@
 {
     "name": "jk/hn_summarizer",
     "build": {
-        "dockerfile": "../Dockerfile"
+        "dockerfile": "../grab_articles/Dockerfile"
     },
     "customizations": {
         "vscode": {
@@ -9,21 +9,19 @@
                 "editorconfig.editorconfig",
                 "github.copilot",
                 "github.copilot-labs",
-                "ms-python.black-formatter",
                 "ms-python.isort",
                 "ms-python.pylint",
                 "ms-python.python",
                 "ms-python.vscode-pylance"
             ],
             "settings": {
-                "python.pythonPath": "/usr/local/bin/python",
-                "python.linting.pylintEnabled": true,
-                "python.linting.enabled": true
+                "python.pythonPath": "/usr/local/bin/python"
             }
         }
     },
     "runArgs": [
-        "--env-file=.env"
+        "--env-file=.env",
+        "--network=scraper-net"
     ],
     "forwardPorts": []
 }

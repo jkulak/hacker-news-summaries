@@ -8,12 +8,14 @@ import requests
 
 load_dotenv(override=True)
 
+SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 REQUEST_TIMEOUT = 10
-HN_JSON_FEED_URL = os.getenv('HN_JSON_FEED_URL')
-
+HN_JSON_FEED_URL = os.getenv("HN_JSON_FEED_URL")
+DB_NAME = "hn.sqlite3"
 
 # Create or connect to hn.sqlite database
-conn = sqlite3.connect("db/hn.sqlite3")
+db_path = os.path.join(SCRIPT_PATH, "..", "db", DB_NAME)
+conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
 

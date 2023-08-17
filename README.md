@@ -11,6 +11,11 @@ This is a Python application that scrapes the Hacker News best list and saves th
 * `docker build -t hn_scraper .`
 * `docker run -it --rm -v $(pwd):/app hn_scraper`
 
+### Scraper
+
+* `docker network create scraper-net`
+* `docker run -d --name chrome -p 4444:4444 --network scraper-net selenium/standalone-chrome`
+
 This will start the Docker container and run the application. The application will scrape the Hacker News best list and save the articles to a SQLite database called `hn.db`.
 
 ## How to deploy the application to an empty VM
