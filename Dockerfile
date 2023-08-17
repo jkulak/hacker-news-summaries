@@ -1,5 +1,5 @@
 # Using official python runtime base image
-FROM python:3.9-slim
+FROM python:3.11.4-alpine3.18
 
 # Set the working directory in docker
 WORKDIR /app
