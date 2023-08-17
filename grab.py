@@ -1,11 +1,16 @@
 from datetime import datetime
+import os
 import re
 import sqlite3
 
+from dotenv import load_dotenv
 import requests
 
+load_dotenv(override=True)
+
 REQUEST_TIMEOUT = 10
-HN_JSON_FEED_URL = "https://hnrss.org/best.jsonfeed"
+HN_JSON_FEED_URL = os.getenv('HN_JSON_FEED_URL')
+
 
 # Create or connect to hn.sqlite database
 conn = sqlite3.connect("db/hn.sqlite3")
