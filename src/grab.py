@@ -1,3 +1,6 @@
+"""
+
+"""
 from datetime import datetime
 import os
 import re
@@ -39,19 +42,23 @@ def create_table():
         points INTEGER,
         comments_json TEXT,
         article_content_raw TEXT,
-        article_content_extracted TEXT
+        article_content_raw_size INTEGER,
+        article_content_extracted TEXT,
+        article_content_extracted_size INTEGER
     )
     """
     )
 
 
 def extract_from_content_html(content_html):
-    # Extracting comments URL and number of comments using regex
+    """Extracting comments URL and number of comments using regex"""
+
     comments_url = (
         re.search(r'Comments URL: <a href="(.*?)">', content_html).group(1)
         if re.search(r'Comments URL: <a href="(.*?)">', content_html)
         else None
     )
+
     num_comments = (
         int(re.search(r"# Comments: (\d+)", content_html).group(1))
         if re.search(r"# Comments: (\d+)", content_html)
@@ -69,7 +76,6 @@ def extract_from_content_html(content_html):
 
 def fetch_comments(url):
     response = requests.get(url)
-    # Assuming the comments are returned in JSON format, although this might not be the case for Hacker News
     return response.text
 
 

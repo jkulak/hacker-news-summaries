@@ -12,11 +12,10 @@ load_dotenv(override=True)
 
 REQUEST_TIMEOUT = 10
 HN_JSON_FEED_URL = os.getenv("HN_JSON_FEED_URL")
-DB_NAME = "hn.sqlite3"
 CHROME_DRIVER_URL = "http://chrome:4444/wd/hub"
+DB_PATH = os.getenv("DB_PATH")
 
 # Create or connect to hn.sqlite database
-DB_PATH = os.getenv("DB_PATH")
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
@@ -44,12 +43,14 @@ def update_content(hn_id, content):
     cursor.execute(
         """
         UPDATE hacker_news
-        SET article_content_raw = ?
+        SET
+            article_content_raw = ?,
+            article_content_raw_size = ?
         WHERE hn_id = ?
         """,
-        (content, hn_id),
+        (content, len(content), hn_id),
     )
-    cursor.commit()
+    conn.commit()
 
 
 def main():
