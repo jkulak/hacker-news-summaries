@@ -1,6 +1,7 @@
 # Custom
 *.sqlite3
 .DS_Store
+_NOTES_hacker-news-summaries.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
