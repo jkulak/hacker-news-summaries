@@ -1,0 +1,2 @@
+10 * * * * /home/hn/cron_scripts/run_grabber.sh >> /home/hn/cron_scripts/run_grabber 2>&1
+20 * * * * /home/hn/cron_scripts/run_scraper.sh >> /home/hn/cron_scripts/run_scraper 2>&1
